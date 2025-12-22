@@ -1,7 +1,6 @@
-import time
 import asyncio
-from typing import Union, Optional
-
+import time
+from typing import Optional, Union
 
 type time_delay = Optional[Union[int, float]]
 
@@ -25,17 +24,14 @@ def sync_code():
 
 async def main():
     print("======================")
-    
-    
+
     # sleep
     # memberi jeda waktu untuk eksekusi
     start = time.perf_counter()
     await delay_sleep(0.5, "ini sleep")
     print(f"finished in {time.perf_counter() - start:.4f}")
 
-
     print("======================")
-
 
     # create task
     # menaruh coroutine ke event loop untuk di eksekusi
@@ -44,10 +40,8 @@ async def main():
     await task1
     print(f"finished in {time.perf_counter() - start:.4f}")
 
-
     print("======================")
 
-    
     # task group
     # menunggu semua task selesai tapi ketika ada yg fail maka semua nya dibatalkan
     start = time.perf_counter()
@@ -60,7 +54,7 @@ async def main():
             tg.create_task(fail_task(0.5))
             tg.create_task(fail_task(0.5))
 
-    # * di except fungsi nya untuk mengambil semua error disatu waktu 
+    # * di except fungsi nya untuk mengambil semua error disatu waktu
     except* Exception as e:
         print("Error TaskGroup: ")
         for e in e.exceptions:
@@ -69,9 +63,7 @@ async def main():
     print(f"finished in {time.perf_counter() - start:.4f}")
     print("task group selesai")
 
-
     print("======================")
-
 
     # gather task
     # ketika ada error di satu task, bisa tetep lanjut.
@@ -84,17 +76,15 @@ async def main():
             delay_sleep(0.8, "Concurrent B"),
             delay_sleep(0.5, "Concurrent C"),
             fail_task(0.1),
-            return_exceptions=True, # untuk melanjutkan walau ada error
+            return_exceptions=True,  # untuk melanjutkan walau ada error
         )
-        
+
     except Exception as e:
         print("Error TaskGather: ", e)
 
     print(f"finished in {time.perf_counter() - start:.4f}")
 
-
     print("======================")
-
 
     # wait task for
     # untuk membatasi task yang lama di eksekusi
@@ -103,18 +93,14 @@ async def main():
     except asyncio.TimeoutError:
         print("Timeout Error")
 
-
     print("======================")
-
 
     # to thread
     # untuk menjalankan sync code di thread seolah menjadi async
     sync = await asyncio.to_thread(sync_code)
     print(sync)
 
-
     print("======================")
-
 
     # timeout with
     try:
@@ -122,7 +108,6 @@ async def main():
             await asyncio.create_task(delay_sleep(2, "Timeout with"))
     except asyncio.TimeoutError:
         print("Timeout Error")
-
 
     print("======================")
 
