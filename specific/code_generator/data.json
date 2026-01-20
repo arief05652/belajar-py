@@ -1,0 +1,11 @@
+[
+  {
+    "name": "plus",
+    "dart": "LucidIcons.plus"
+  },
+  {
+    "name": "home",
+    "dart": "LucidIcons.home"
+  },
+  { "name": "car", "dart": "LucidIcons.car" }
+]

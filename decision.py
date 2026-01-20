@@ -1,3 +1,8 @@
+# Ternary
+data = 5
+# nilai_jika_benar if kondisi else nilai_jika_salah
+print("Data = 5" if data == 5 else "Data != 5")
+
 """ if, elif, else """
 a: str = 15
 
@@ -8,7 +13,7 @@ elif a < 10:
     print("{} kurang dari 10".format(a))
 else:
     print("{} tidak semuanya".format(a))
-    
+
 """ nested if """
 if a > 10:
     print("a lebih dari 10")
@@ -16,27 +21,28 @@ if a > 10:
         print("nested if a sama dengan 15")
 else:
     print("a kurang dari 10")
-    
+
 """ percabangan dengan walrus """
-# - cara kerja: variable langsung di tugaskan 
+# - cara kerja: variable langsung di tugaskan
 #   di operasi nya ngga di inisiasi dulu
 if (b := 15) > 5:
     print("{} lebih dari 5".format(b))
-    
+
 """ match """
 def checkDay(day, hola: list[str] = None):
     match day:
-        case 'senin':
+        case "senin":
             return "Sekarang hari senin"
-        case 'selasa':
+        case "selasa":
             return "Sekarang hari selasa"
-        case _: # default case dengan wildcard
+        case _:  # default case dengan wildcard
             return "Gatau hari"
-        
+
     match hola:
-        case [time, name, umur] if umur < 17: # match parsing list dengan if 
-            return f"Good {time} {name} {umur} age`s \nkamu belum cukup umur!" 
-        case [time, name, umur]: # match parsing list
-            return f"Good {time} {name} {umur} age`s !" 
-        
-print(checkDay('senin', ["Morning", "Arief", 17]))
+        case [time, name, umur] if umur < 17:  # match parsing list dengan if
+            return f"Good {time} {name} {umur} age`s \nkamu belum cukup umur!"
+        case [time, name, umur]:  # match parsing list
+            return f"Good {time} {name} {umur} age`s !"
+
+
+print(checkDay("senin", ["Morning", "Arief", 17]))
