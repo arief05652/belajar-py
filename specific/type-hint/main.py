@@ -1,24 +1,27 @@
-from typing import (
-    Dict,
-    List,
-    Tuple,
-    Set,
-    Union,
-    Optional,
-    TypeAlias,
-    ClassVar,
-    TypeVar,
-    Literal,
-    TypedDict,
-    NewType,
-    Annotated,
-    Final,
-    NamedTuple,
-    Self,
-)
 import random
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
-
+from typing import (
+    Annotated,
+    Any,
+    ClassVar,
+    Dict,
+    Final,
+    Generic,
+    List,
+    Literal,
+    NamedTuple,
+    NewType,
+    Optional,
+    Protocol,
+    Self,
+    Set,
+    Tuple,
+    TypeAlias,
+    TypedDict,
+    TypeVar,
+    Union,
+)
 
 # Data types
 x: int = 1
@@ -52,6 +55,7 @@ UserIdArief = NewType("UserIdArief", int)
 UserIdBudi = NewType("UserIdBudi", int)
 
 # Type generic
+# digunakan saat argumen dan output harus sama
 S = TypeVar("S")
 
 # Limitasi value agar IDE kasih hint
@@ -129,20 +133,80 @@ print(
 
 # Chaining
 print("Chaining method")
+
+
 class Chainned:
-    def __init__(self, text: str = ''):
+    def __init__(self, text: str = ""):
         self.text = text
-        
+
     def add_text(self, text: str) -> Self:
         self.text = text
         return self
-    
+
     def upper_text(self) -> Self:
         self.text = self.text.upper()
         return self
-    
+
     @property
-    def get_text(self) -> str: 
+    def get_text(self) -> str:
         return self.text
-    
-print( Chainned().add_text('Ucup Knalpot').upper_text().get_text )
+
+
+print(Chainned().add_text("Ucup Knalpot").upper_text().get_text)
+
+# Generic class
+# digunakan untuk handle class yang bisa custom tipe data
+print("##############")
+
+S = TypeVar("S")
+
+
+class GenericClass(Generic[S]):
+    def __init__(self):
+        self._handlers: List[Callable[[str], str]] = []
+
+    def subscribe(self, handler: Callable[[str], str]):
+        self._handlers.append(handler)
+
+    def emit(self, data: str):
+        # results = []
+        print("list handler: ", self._handlers)
+        for h in self._handlers:
+            print(h(data))  # <- jalanin fungsi yang diambil dari list
+        #     results.append(result)
+        # return results
+
+
+generic = GenericClass[str]()  # <- inisiasi class tipe data
+
+# masukin fungsi ke list
+generic.subscribe(lambda a: f"subs({a})")
+
+# masukin data
+generic.emit("ucup")
+# generic.emit("arip")
+
+
+# Protocol = kontrak bentuk (bukan inheritance)
+# Artinya: object dianggap SupportsClose
+# kalau PUNYA method close() -> None
+class SupportsClose(Protocol):
+    def close(self) -> None: ...
+
+
+# Class biasa, TIDAK inherit Protocol
+# Tapi karena punya close(), dia cocok dengan SupportsClose
+class Resource:
+    def close(self) -> None:
+        print("Resource.close()")
+
+
+# Fungsi ini minta iterable object
+# yang minimal punya method close()
+def close_all(items: Iterable[SupportsClose]) -> None:
+    for item in items:
+        item.close()  # aman dipanggil
+
+
+# Resource dianggap SupportsClose
+close_all([Resource()])  # OK
