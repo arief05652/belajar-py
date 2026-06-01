@@ -30,6 +30,9 @@ try:
 except:
     # exception penyebab code error
     ...
+except* ValueError as e:
+    # menangani exception group dan memecahnya menjadi tipe yang sesuai
+    ...
 else:
     # jika kode tidak error jalankan ini
     ...
