@@ -85,7 +85,7 @@ delays = [3, 1, 2, 0.5]
 
 with ThreadPoolExecutor(max_workers=4) as worker:
     futures_map = {
-        worker.submit(fetch_data, url, delay): url  # map future -> url untuk tracking
+        worker.submit(fetch_data, url, delay): delay  # map future -> url untuk tracking
         for url, delay in zip(urls, delays)
     }
 
